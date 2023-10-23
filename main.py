@@ -3,6 +3,9 @@ from procesos_csv import Proceso
 
 path = input('Ingrese la dirección del .csv\n')
 arch = csv_opener(path)
+
+
+# TESTING-> Borrar cuando se continue con la implementacion
 # print(len(arch))  -> La cantidad de procesos a ingresar
 
 # Con este código puede comprobar que se copiaron correctamente los valores del .csv.
