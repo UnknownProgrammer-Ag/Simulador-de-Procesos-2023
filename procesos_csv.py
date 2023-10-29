@@ -1,4 +1,5 @@
 import csv
+from collections import deque
 
 
 class Proceso:
@@ -13,7 +14,7 @@ def csv_opener(direc):
     file = open(direc, newline='')
     reader = csv.reader(file)
     next(reader)
-    arch_procesos = []
+    arch_procesos = deque()
     for row in reader:
         proc = Proceso(int(row[0]), int(row[1]), int(row[2]), int(row[3]))
         arch_procesos.append(proc)
