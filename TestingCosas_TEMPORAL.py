@@ -6,7 +6,7 @@ from tkinter import filedialog
 root = tk.Tk()
 root.withdraw()
 
-path = filedialog.askopenfilename()
+path = filedialog.askopenfilename(title="Seleccionar Archivo CSV",filetypes=[("Archivo csv","*.csv"),("Todos los archivos","*.*")])
 arch = csv_opener(path)
 # El modulo terminaltables ayuda en el dibujo en la consola de tablas.
 # Data almacena la información, cada [] representa una fila, y las comas son las columnas.
