@@ -1,8 +1,12 @@
 from procesos_csv import csv_opener
 from terminaltables import AsciiTable
+import tkinter as tk
+from tkinter import filedialog
 
+root = tk.Tk()
+root.withdraw()
 
-path = input('Ingrese la dirección del .csv\n')
+path = filedialog.askopenfilename()
 arch = csv_opener(path)
 # El modulo terminaltables ayuda en el dibujo en la consola de tablas.
 # Data almacena la información, cada [] representa una fila, y las comas son las columnas.
