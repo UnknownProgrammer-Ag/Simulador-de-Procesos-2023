@@ -1,22 +1,23 @@
-class Particiones:
-    def __init__(self, id, dir, tam, frag, restringida):
-        self.id = id
+# Memoria es el módulo encargado de manejar las particiones y la política de asignación establecida.
+
+# Particiones
+class Particion:
+    def __init__(self, idpart, dir, tam):
+        self.idpart = idpart
         self.dir = dir
         self.tam = tam
-        self.frag = frag
-        self.restringida = restringida
-
-    def cargar_particion(self, id, tam, fragm):
-        self.idpart = id
-        self.frag = self.tam-tam
-        self.tam = tam
-        self.ocupado = 1
-
-    def descargar_particion(self):
-        self.idpart = 0
-        self.tam = self.tam + self.frag
-        self.frag = 0
+        self.fragmInt = 0
         self.ocupado = 0
 
+    def cargar(self, idproc, tamProc):
+        self.idproc = idproc
+        self.fragmInt = self.tam - tamProc
+        self.ocupado = 1
 
 
+memoria_Principal = [
+    Particion(0, '000', 100),
+    Particion(1, '100', 250),
+    Particion(2, '350', 120),
+    Particion(3, '470', 60)
+]
