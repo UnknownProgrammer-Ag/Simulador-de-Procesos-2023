@@ -11,3 +11,4 @@ def simulador(self):
     path = filedialog.askopenfilename(title="Seleccionar Archivo CSV",filetypes=[("Archivo csv","*.csv"),("Todos los archivos","*.*")])
     arch = csv_opener(path)
 
+arch.append()
