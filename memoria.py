@@ -16,7 +16,7 @@ class Particion:
 
 
 memoria_Principal = [
-    Particion(0, '000', 100),
+    Particion(0, '000', 105),
     Particion(1, '100', 250),
     Particion(2, '350', 120),
     Particion(3, '470', 60)
