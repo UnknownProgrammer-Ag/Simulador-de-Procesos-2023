@@ -14,6 +14,10 @@ class Particion:
         self.fragmInt = self.tam - tamProc
         self.ocupado = 1
 
+    def descargar(self):
+        self.idproc = 0
+        self.fragmInt = 0
+        self.ocupado = 0
 
 memoria_Principal = [
     Particion(0, '000', 100),
