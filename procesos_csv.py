@@ -8,6 +8,7 @@ class Proceso:
         self.tam = tam
         self.arribo = tA
         self.irrup = tI
+        self.estado = ' '
 
 
 def csv_opener(direc):
