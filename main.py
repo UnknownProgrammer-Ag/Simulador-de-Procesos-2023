@@ -16,6 +16,16 @@ def simulador(arch):
     mult_P=0
     while True:
         #Cargar Cola de Nuevos
+        temp = arch.popleft()
+        if temp.arribo == tiempo_total:
+            nuevos.append(temp)
+        else:
+            arch.appendleft(temp)
+
+        #Cargar Listos --> Mantener Multiprogramación de 5
+        if (nuevos):
+            while (len(listos)<5):
+                listos.append(nuevos.popleft())
 
         tiempo_total+=1
 
