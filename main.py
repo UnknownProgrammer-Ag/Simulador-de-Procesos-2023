@@ -15,18 +15,18 @@ def simulador(arch):
     tiempo_total=0
     nuevos=deque()
     listos=deque()
-    mult_P=0
+    temp = arch.popleft()
     #while True:
     for i in range(5):
         #Cargar Cola de Nuevos
-        temp = arch.popleft()
-        if temp.arribo == tiempo_total:
+        while temp.arribo ==tiempo_total:
             nuevos.append(temp)
+            temp = arch.popleft()
         else:
             arch.appendleft(temp)
 
         #Cargar Listos --> Mantener Multiprogramación de 5
-        while (nuevos):
+        while nuevos is not None:
             if (len(listos)<5):
                 listos.append(nuevos.popleft())
 
