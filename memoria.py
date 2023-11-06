@@ -10,13 +10,13 @@ class Particion:
         self.ocupado = 0
         self.idproc = None
 
-    def cargar(self, idproc, tamProc):
-        self.idproc = idproc
-        self.fragmInt = self.tam - tamProc
+    def cargar(self, proceso):
+        self.proceso = proceso
+        self.fragmInt = self.tam - self.proceso.tam
         self.ocupado = 1
 
     def descargar(self):
-        self.idproc = 0
+        self.proceso = None
         self.fragmInt = 0
         self.ocupado = 0
 
@@ -36,7 +36,7 @@ class Memoria:
                         mejor_ajuste = particion
 
         if mejor_ajuste is not None:
-            mejor_ajuste.cargar(proceso.id, proceso.tam)
+            mejor_ajuste.cargar(proceso)
             print(
                 f"Proceso {proceso.id} asignado a la partición {mejor_ajuste.idpart}.")
             self.ocupadas += 1

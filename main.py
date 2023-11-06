@@ -1,6 +1,7 @@
 # Importar modulos separados del simulador
 from procesos_csv import csv_opener
 from memoria import Memoria, memoria_principal
+from procesador import Procesador, CPU
 # Importar modulos de Python para facilitar implementación
 import tkinter as tk
 from tkinter import filedialog
@@ -41,15 +42,31 @@ def simulador(arch):
             else:
                 break
 
-        tiempo_total += 1
+        # Cargar Procesador
+        if not CPU.ocupado:
+            # Simple Variable para obtener menor ID (presuntamente el proceso que debe ingresar)
+            min = 11  # SE sabe que hay un maximo de 10 procesos
+            for part in memoria_principal:
+                if part.proceso.id < min:
+                    min = part.proceso.id
+                    temp = part.proceso
 
+            CPU.cargar(temp)
+            while CPU.quantum > 0:
+                CPU.procesar()
+                if CPU.proceso.irrup == 0:
+                    break
+
+            # Termino el quantum o el proceso ha finalizado
+            if CPU.proceso.irrup == 0:
+                print(f"Proceso {CPU.proceso.id} ha terminado...")
         if tiempo_total == 3:
             break
 
     data = [['ID Part', 'Dir. Comienzo', 'Tamaño', 'IdProc', 'Fragment']]
     for part in memoria_principal.particiones:
         data.append([part.idpart, part.dir, part.tam,
-                    part.idproc, part.fragmInt])
+                    part.proceso.id, part.fragmInt])
     table = AsciiTable(data)
     table.title = 'Tabla de Memoria'
     table.inner_row_border = True
