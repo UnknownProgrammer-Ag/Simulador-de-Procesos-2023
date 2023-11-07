@@ -1,0 +1,4 @@
+Hacer la carga de nuevos a listos y a su vez la carga de arch a nuevos un procedimiento que se ejecute cada actualización de tiempo total
+Listos pierde los procesos cuando se lo carga en memoria? SI: Modificar el codigo para que se realize un append por derecha a la cola de listos cada vez que se cargue en memoria exitosamente.
+Memoria descarga los procesos y libera la particion cuando termina de procesar. Listos actualiza los procesos existentes, buscando en la cola el proceso.
+Para encontrar la partición con el proceso en cuestión usar un método que de el indice de un elemento incluido en la lista .
