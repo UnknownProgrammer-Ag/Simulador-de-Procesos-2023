@@ -12,7 +12,6 @@ class Procesador:
 
     def procesar(self):
         self.quantum -= 1
-        tiempo_total += 1
         self.proceso.irrup -= 1
 
     def reiniciar_q(self):

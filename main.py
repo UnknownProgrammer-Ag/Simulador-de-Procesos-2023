@@ -25,6 +25,7 @@ def simulador(arch):
                 nuevos.append(temp)
             else:
                 arch.appendleft(temp)
+                list(nuevos)
                 break
         # Cargar Listos --> Mantener Multiprogramación de 5
         while len(listos) < 5:
@@ -32,6 +33,7 @@ def simulador(arch):
                 temp = nuevos.popleft()
                 listos.append(temp)
             else:
+                list(listos)
                 break
 
         # Cargar Particiones
@@ -52,17 +54,19 @@ def simulador(arch):
                     temp = part.proceso
 
             CPU.cargar(temp)
-            while CPU.quantum > 0:
-                CPU.procesar()
-                if CPU.proceso.irrup == 0:
-                    break
-
-            # Termino el quantum o el proceso ha finalizado
+        CPU.procesar()
+        tiempo_total += 1 
+        if CPU.quantum == 0:
             if CPU.proceso.irrup == 0:
-                print(f"Proceso {CPU.proceso.id} ha terminado...")
-        if tiempo_total == 3:
-            break
-
+                print(f"Proceso {CPU.proceso.id} termino...")
+            else:
+                #Actualzar
+        
+        
+        
+        loc=listos.index(CPU.proceso)
+                    
+        
     data = [['ID Part', 'Dir. Comienzo', 'Tamaño', 'IdProc', 'Fragment']]
     for part in memoria_principal.particiones:
         data.append([part.idpart, part.dir, part.tam,
