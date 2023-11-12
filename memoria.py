@@ -8,7 +8,7 @@ class Particion:
         self.tam = tam
         self.fragmInt = 0
         self.ocupado = 0
-        self.idproc = None
+        self.proceso = None
 
     def cargar(self, proceso):
         self.proceso = proceso
@@ -40,6 +40,7 @@ class Memoria:
             print(
                 f"Proceso {proceso.id} asignado a la partición {mejor_ajuste.idpart}.")
             self.ocupadas += 1
+            mejor_ajuste.proceso.estado = 'Listos'
             return True
         else:
             print(

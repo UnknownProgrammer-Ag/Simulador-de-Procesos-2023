@@ -9,6 +9,7 @@ class Procesador:
 
     def cargar(self, proceso):
         self.proceso = proceso
+        self.proceso.estado = 'En Ejecución'
 
     def procesar(self):
         self.quantum -= 1
@@ -17,6 +18,7 @@ class Procesador:
     def reiniciar_q(self):
         self.quantum = 2
         self.ocupado = 0
+        self.proceso = None
 
 
 CPU = Procesador()

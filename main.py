@@ -31,6 +31,7 @@ def simulador(arch):
         while len(listos) < 5:
             if nuevos:
                 temp = nuevos.popleft()
+                temp.estado = 'Listos / Suspendidos'
                 listos.append(temp)
                 cant += 1  # Contar cantidad de elementos nuevos cargados a listos
             else:
@@ -41,7 +42,8 @@ def simulador(arch):
         # Cargar Particiones
         while (memoria_principal.ocupadas != 3):
             temp = listos.popleft()
-            memoria_principal.best_Fit(temp)
+            if memoria_principal.best_Fit(temp):
+                temp.estado = 'Listos'
             listos.append(temp)
         list(listos)
 
@@ -55,6 +57,7 @@ def simulador(arch):
                     temp = part.proceso
 
             CPU.cargar(temp)
+
         CPU.procesar()
         tiempo_total += 1
         if CPU.proceso.irrup == 0:
@@ -62,17 +65,20 @@ def simulador(arch):
         else:
             if CPU.quantum == 0:
                 # Actualizacion de Procesos
-
                 for part in memoria_principal:
                     if part.proceso.id == CPU.proceso.id:
+                        part.proceso.irrup = CPU.proceso.irrup
                         loc = listos.index(CPU.proceso)
                         listos[loc].irrup = CPU.proceso.irrup
-                        part.descargar()
+                        if len(listos) > 3:
+                            part.descargar()
 
                 CPU.reiniciar_q()
 
-            else:
-                continue
+        if not nuevos and not listos and not arch and not memoria_principal.particiones and not CPU.ocupado:
+            break
+        else:
+            continue
 
     data = [['ID Part', 'Dir. Comienzo', 'Tamaño', 'IdProc', 'Fragment']]
     for part in memoria_principal.particiones:
