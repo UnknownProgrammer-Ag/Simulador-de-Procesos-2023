@@ -18,7 +18,7 @@ def simulador(arch):
     nuevos = deque()
     listos = deque()
     while True:
-        # Cargar Cola de Nuevos
+        # Cargar Cola de Nuevos mientras exista contenido en arch
         while arch:
             temp = arch.popleft()
             if temp.arribo == tiempo_total:
@@ -27,22 +27,23 @@ def simulador(arch):
                 arch.appendleft(temp)
                 list(nuevos)
                 break
-        # Cargar Listos --> Mantener Multiprogramación de 5
+        # Cargar Listos si la memoria no esta ocupada -> Mantener Multiprogramación de 5
         while len(listos) < 5:
             if nuevos:
                 temp = nuevos.popleft()
                 listos.append(temp)
+                cant += 1  # Contar cantidad de elementos nuevos cargados a listos
             else:
                 list(listos)
                 break
+        listos.rotate(cant)
 
         # Cargar Particiones
         while (memoria_principal.ocupadas != 3):
-            if listos:
-                temp = listos.popleft()
-                memoria_principal.best_Fit(temp)
-            else:
-                break
+            temp = listos.popleft()
+            memoria_principal.best_Fit(temp)
+            listos.append(temp)
+        list(listos)
 
         # Cargar Procesador
         if not CPU.ocupado:
@@ -55,18 +56,24 @@ def simulador(arch):
 
             CPU.cargar(temp)
         CPU.procesar()
-        tiempo_total += 1 
-        if CPU.quantum == 0:
-            if CPU.proceso.irrup == 0:
-                print(f"Proceso {CPU.proceso.id} termino...")
+        tiempo_total += 1
+        if CPU.proceso.irrup == 0:
+            print(f"Proceso {CPU.proceso.id} termino...")
+        else:
+            if CPU.quantum == 0:
+                # Actualizacion de Procesos
+
+                for part in memoria_principal:
+                    if part.proceso.id == CPU.proceso.id:
+                        loc = listos.index(CPU.proceso)
+                        listos[loc].irrup = CPU.proceso.irrup
+                        part.descargar()
+
+                CPU.reiniciar_q()
+
             else:
-                #Actualzar
-        
-        
-        
-        loc=listos.index(CPU.proceso)
-                    
-        
+                continue
+
     data = [['ID Part', 'Dir. Comienzo', 'Tamaño', 'IdProc', 'Fragment']]
     for part in memoria_principal.particiones:
         data.append([part.idpart, part.dir, part.tam,
