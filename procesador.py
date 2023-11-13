@@ -21,4 +21,4 @@ class Procesador:
         self.proceso = None
 
 
-CPU = Procesador()
+cPU = Procesador()

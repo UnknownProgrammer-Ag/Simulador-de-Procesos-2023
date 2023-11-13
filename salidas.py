@@ -36,6 +36,9 @@ class Salidas:
 
     def mostrar_listos(self, cola):
         print("El estado de la cola de listos es la siguiente:\n")
+        for proceso in cola:
+            print(f"Proceso ID: {proceso.id},Estado: {proceso.estado}")
+            print("\n")
 
     def estadistico(self, lista):
         self.lista = lista
