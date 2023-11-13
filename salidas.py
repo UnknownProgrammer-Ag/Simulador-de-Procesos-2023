@@ -18,10 +18,10 @@ class Salidas:
         self.total = total
 
     def estado_procesador(self, proc, estado):
-        print(f"Actualmente el proceso {proc} tiene el estado {estado}")
+        print(f"Actualmente el proceso {proc} tiene el estado {estado}\n")
 
     def estado_procesador(self):
-        print("Actualmente el procesador se encuentra desocupado")
+        print("Actualmente el procesador se encuentra desocupado\n")
 
     def tabla_memoria(self):
         data = [['ID Part', 'Dir. Comienzo', 'Tamaño', 'IdProc', 'Fragment']]
@@ -32,6 +32,7 @@ class Salidas:
         table.title = 'Tabla de Memoria'
         table.inner_row_border = True
         print(table.table)
+        print("\n")
 
     def mostrar_listos(self, cola):
         print("El estado de la cola de listos es la siguiente:\n")
@@ -49,4 +50,4 @@ class Salidas:
         estable.inner_row_border = True
         print(estable.table)
         print(
-            f"Promedios:\n Tiempo de Retorno:{ret/self.total}\t\tTiempo de Espera:{wait/self.total}")
+            f"\nPromedios:\n Tiempo de Retorno:{ret/self.total}\t\tTiempo de Espera:{wait/self.total}")
