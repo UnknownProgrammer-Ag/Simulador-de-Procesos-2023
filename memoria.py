@@ -14,11 +14,14 @@ class Particion:
         self.proceso = proceso
         self.fragmInt = self.tam - self.proceso.tam
         self.ocupado = 1
+        self.proceso.estado = 'Listo'
 
     def descargar(self):
+        resg = self.proceso
         self.proceso = None
         self.fragmInt = 0
         self.ocupado = 0
+        return resg
 
 
 class Memoria:
@@ -40,7 +43,6 @@ class Memoria:
             print(
                 f"Proceso {proceso.id} asignado a la partición {mejor_ajuste.idpart}.")
             self.ocupadas += 1
-            mejor_ajuste.proceso.estado = 'Listos'
             return True
         else:
             print(

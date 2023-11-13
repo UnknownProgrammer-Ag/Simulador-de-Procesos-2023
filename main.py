@@ -2,12 +2,12 @@
 from procesos_csv import csv_opener
 from memoria import Memoria, memoria_principal
 from procesador import Procesador, CPU
+from salidas import Salidas, OutPut
 # Importar modulos de Python para facilitar implementación
 import tkinter as tk
 from tkinter import filedialog
 from time import sleep
 from collections import deque
-from terminaltables import AsciiTable
 
 root = tk.Tk()
 root.withdraw()
@@ -15,8 +15,11 @@ root.withdraw()
 
 def simulador(arch):
     tiempo_total = 0
+    lista_sal = []
     nuevos = deque()
     listos = deque()
+    contProc = 0
+    sal = Salidas(len(arch))
     while True:
         # Cargar Cola de Nuevos mientras exista contenido en arch
         while arch:
@@ -28,23 +31,23 @@ def simulador(arch):
                 list(nuevos)
                 break
         # Cargar Listos si la memoria no esta ocupada -> Mantener Multiprogramación de 5
-        while len(listos) < 5:
+        while contProc < 5:
             if nuevos:
                 temp = nuevos.popleft()
                 temp.estado = 'Listos / Suspendidos'
                 listos.append(temp)
-                cant += 1  # Contar cantidad de elementos nuevos cargados a listos
+                contProc += 1
             else:
                 list(listos)
                 break
-        listos.rotate(cant)
 
         # Cargar Particiones
         while (memoria_principal.ocupadas != 3):
-            temp = listos.popleft()
-            if memoria_principal.best_Fit(temp):
-                temp.estado = 'Listos'
-            listos.append(temp)
+            if listos:
+                temp = listos.popleft()
+                if not memoria_principal.best_Fit(temp):
+                    listos.append(temp)
+                    # Quiere decir que no hay particion en este momento que aloje al tamaño, pero si hay disponible
         list(listos)
 
         # Cargar Procesador
@@ -62,32 +65,27 @@ def simulador(arch):
         tiempo_total += 1
         if CPU.proceso.irrup == 0:
             print(f"Proceso {CPU.proceso.id} termino...")
+            item = OutPut(CPU.proceso.id, CPU.proceso.arribo,
+                          CPU.proceso.resgirrup, tiempo_total)
+            lista_sal.append(item)
+            for part in memoria_principal:
+                if part.proceso.irrup == CPU.proceso.id:
+                    part.descargar()
+            CPU.reiniciar_q()
+            sal.estado_procesador()
+            sal.tabla_memoria()
+            contProc -= 1
         else:
             if CPU.quantum == 0:
                 # Actualizacion de Procesos
                 for part in memoria_principal:
                     if part.proceso.id == CPU.proceso.id:
                         part.proceso.irrup = CPU.proceso.irrup
-                        loc = listos.index(CPU.proceso)
-                        listos[loc].irrup = CPU.proceso.irrup
-                        if len(listos) > 3:
-                            part.descargar()
-
+                        if contProc > 3 and memoria_principal.ocupadas == 3:
+                            temp = part.descargar()
+                            temp.estado = 'Listos/Suspendidos'
+                            listos.append(temp)
                 CPU.reiniciar_q()
-
-        if not nuevos and not listos and not arch and not memoria_principal.particiones and not CPU.ocupado:
-            break
-        else:
-            continue
-
-    data = [['ID Part', 'Dir. Comienzo', 'Tamaño', 'IdProc', 'Fragment']]
-    for part in memoria_principal.particiones:
-        data.append([part.idpart, part.dir, part.tam,
-                    part.proceso.id, part.fragmInt])
-    table = AsciiTable(data)
-    table.title = 'Tabla de Memoria'
-    table.inner_row_border = True
-    print(table.table)
 
 
 # Principal

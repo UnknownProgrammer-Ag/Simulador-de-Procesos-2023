@@ -8,6 +8,7 @@ class Proceso:
         self.tam = tam
         self.arribo = tA
         self.irrup = tI
+        self.resgirrup = tI
         self.estado = ' '
 
 
