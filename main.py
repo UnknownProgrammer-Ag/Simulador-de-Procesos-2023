@@ -19,6 +19,7 @@ def simulador(arch):
     nuevos = deque()
     listos = deque()
     contProc = 0
+    band_nuevos = False
     sal = Salidas(len(arch))
     resg_Listos = []
     while True:
@@ -27,24 +28,10 @@ def simulador(arch):
             temp = arch.popleft()
             if temp.arribo == tiempo_total:
                 nuevos.append(temp)
+                band_nuevos = True
             else:
                 arch.appendleft(temp)
-                if tiempo_total == 0:
-                    sal.estado_procesador()
-                else:
-                    sal.estado_procesador(cPU.proceso.id, cPU.proceso.estado)
-
-                sal.tabla_memoria()
-                sal.mostrar_listos(resg_Listos)
-
-                while True:
-                    user = input("Ingrese Enter para Continuar...")
-                    if user == "":
-                        print("Continuando...")
-                        sleep(1)
-                        break
-                    else:
-                        print("Debe ser enter para continuar...")
+                break
         # Cargar Listos si la memoria no esta ocupada -> Mantener Multiprogramación de 5
         while contProc < 5:
             if nuevos:
@@ -53,7 +40,6 @@ def simulador(arch):
                 listos.append(temp)
                 contProc += 1
             else:
-                list(listos)
                 break
         # Cargar Particiones
         intento = 0
@@ -67,23 +53,16 @@ def simulador(arch):
                     listos.append(temp)
                     # Quiere decir que no hay particion en este momento que aloje al tamaño, pero si hay disponible
                 else:
-                    temp.estado = 'Listo'
                     resg_Listos.append(temp)
+                    cPU.lista_prioridad.append(temp)
             else:
                 break
-        # Cargar Procesador
-        if not cPU.ocupado:
-            # Simple Variable para obtener menor ID (presuntamente el proceso que debe ingresar)
-            min = 11  # SE sabe que hay un maximo de 10 procesos
 
-            for part in memoria_principal.particiones:
-                if part.proceso.id < min:
-                    min = part.proceso.id
-                    temp = part.proceso
-            cPU.cargar(temp)
+        # Cargar Procesador en Tiempo=0
+        if tiempo_total==0:
+            cPU.buscar_proceso()
 
         cPU.procesar()
-        tiempo_total += 1
 
         if cPU.proceso.irrup == 0:
             print(f"Proceso {cPU.proceso.id} termino...")
@@ -92,12 +71,16 @@ def simulador(arch):
                           cPU.proceso.resgirrup, tiempo_total)
             lista_sal.append(item)
             for part in memoria_principal.particiones:
-
-                if part.proceso.irrup == cPU.proceso.id:
-                    part.descargar()
+                if part.proceso != None:
+                    if part.proceso.irrup == cPU.proceso.id:
+                        part.descargar()
+                        resg_Listos.remove(part.proceso)
+                        cPU.lista_prioridad.remove(part.proceso)
             cPU.reiniciar_q()
+            cPU.buscar_proceso()
 
-            sal.estado_procesador()
+            print(f"Tiempo Actual: {tiempo_total}\n")
+            sal.estado_procesador(cPU.proceso)
             sal.tabla_memoria()
             sal.mostrar_listos(resg_Listos)
             while True:
@@ -115,14 +98,37 @@ def simulador(arch):
             if cPU.quantum == 0:
                 # Actualizacion de Procesos
                 for part in memoria_principal.particiones:
-                    if part.proceso.id == cPU.proceso.id:
-                        part.proceso.irrup = cPU.proceso.irrup
-                        if contProc > 3 and memoria_principal.ocupadas == 3:
-                            temp = part.descargar()
-                            temp.estado = 'Listos/Suspendidos'
-                            listos.append(temp)
-                            resg_Listos.remove(temp)
+                    if part.proceso != None:
+                        if part.proceso.id == cPU.proceso.id:
+                            part.proceso.irrup = cPU.proceso.irrup
+                            part.proceso.estado = 'Listo'
+                            if contProc > 3 and memoria_principal.ocupadas == 3 and part.tam>= listos[0].tam:
+                                temp = part.descargar()
+                                temp.estado = 'Listos/Suspendidos'
+                                listos.append(temp)
+                                resg_Listos.remove(temp)#ERROR REVISAR PORQUE??????!!!
+                                cPU.lista_prioridad.remove(temp)
+                cPU.lista_prioridad.rotate(-1)
                 cPU.reiniciar_q()
+                cPU.buscar_proceso()
+        # MOSTRAR SALIDAS A NUEVO PROCESO
+        if band_nuevos:
+            print(f"Tiempo Actual: {tiempo_total}\n")
+            sal.estado_procesador(cPU.proceso)
+            sal.tabla_memoria()
+            sal.mostrar_listos(resg_Listos)
+            while True:
+                user = input("Ingrese Enter para Continuar...")
+                if user == "":
+                    print("Continuando...")
+                    sleep(1)
+                    band_nuevos= False
+                    break
+                else:
+                    print("Debe ser enter para continuar...")
+
+        tiempo_total += 1
+        #Finalizar Simulador
         if not arch:
             if not nuevos:
                 if not listos:

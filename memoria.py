@@ -40,13 +40,9 @@ class Memoria:
 
         if mejor_ajuste is not None:
             mejor_ajuste.cargar(proceso)
-            print(
-                f"Proceso {proceso.id} asignado a la partición {mejor_ajuste.idpart}.")
             self.ocupadas += 1
             return True
         else:
-            print(
-                f"Proceso {proceso.id} no se pudo asignar a ninguna partición de memoria.")
             return False
 
 
