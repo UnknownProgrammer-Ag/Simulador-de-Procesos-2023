@@ -106,7 +106,9 @@ def simulador(arch):
                                 temp = part.descargar()
                                 temp.estado = 'Listos/Suspendidos'
                                 listos.append(temp)
-                                resg_Listos.remove(temp)#ERROR REVISAR PORQUE??????!!!
+                                for inx, item in enumerate(resg_Listos):
+                                    if item.id == temp.id:
+                                        resg_Listos.pop(resg_Listos[inx])
                                 cPU.lista_prioridad.remove(temp)
                 cPU.lista_prioridad.rotate(-1)
                 cPU.reiniciar_q()
