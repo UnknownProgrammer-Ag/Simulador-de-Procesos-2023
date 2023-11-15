@@ -42,6 +42,7 @@ def simulador(arch):
             else:
                 break
         # Cargar Particiones
+        # PENSAR MEJOR MANERA DE IMPLEMENTAR RECORRIDO DE COLA,
         intento = 0
         while (memoria_principal.ocupadas != 3):
             if listos and intento <= len(listos):
@@ -59,11 +60,11 @@ def simulador(arch):
                 break
 
         # Cargar Procesador en Tiempo=0
-        if tiempo_total==0:
+        if tiempo_total == 0:
             cPU.buscar_proceso()
 
         cPU.procesar()
-
+        # REVISAR TODA LA ESTRUCTURA DE ESTA SECCION
         if cPU.proceso.irrup == 0:
             print(f"Proceso {cPU.proceso.id} termino...")
 
@@ -75,7 +76,8 @@ def simulador(arch):
                     if part.proceso.irrup == cPU.proceso.id:
                         cPU.lista_prioridad.remove(part.proceso)
                         part.descargar()
-                        resg_Listos = [item for item in resg_Listos if item.id!=cPU.proceso.id]
+                        resg_Listos = [
+                            item for item in resg_Listos if item.id != cPU.proceso.id]
             cPU.reiniciar_q()
             cPU.buscar_proceso()
 
@@ -102,11 +104,12 @@ def simulador(arch):
                         if part.proceso.id == cPU.proceso.id:
                             part.proceso.irrup = cPU.proceso.irrup
                             part.proceso.estado = 'Listo'
-                            if contProc > 3 and memoria_principal.ocupadas == 3 and part.tam>= listos[0].tam:
+                            if contProc > 3 and memoria_principal.ocupadas == 3 and part.tam >= listos[0].tam:
                                 temp = part.descargar()
                                 temp.estado = 'Listos/Suspendidos'
                                 listos.append(temp)
-                                resg_Listos = [item for item in resg_Listos if item.id != temp.id]
+                                resg_Listos = [
+                                    item for item in resg_Listos if item.id != temp.id]
                                 cPU.lista_prioridad.remove(temp)
                 cPU.lista_prioridad.rotate(-1)
                 cPU.reiniciar_q()
@@ -122,13 +125,13 @@ def simulador(arch):
                 if user == "":
                     print("Continuando...")
                     sleep(1)
-                    band_nuevos= False
+                    band_nuevos = False
                     break
                 else:
                     print("Debe ser enter para continuar...")
 
         tiempo_total += 1
-        #Finalizar Simulador
+        # Finalizar Simulador
         if not arch:
             if not nuevos:
                 if not listos:
