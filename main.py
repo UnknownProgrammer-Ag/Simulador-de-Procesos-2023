@@ -73,9 +73,9 @@ def simulador(arch):
             for part in memoria_principal.particiones:
                 if part.proceso != None:
                     if part.proceso.irrup == cPU.proceso.id:
-                        part.descargar()
-                        resg_Listos.remove(part.proceso)
                         cPU.lista_prioridad.remove(part.proceso)
+                        part.descargar()
+                        resg_Listos = [item for item in resg_Listos if item.id!=cPU.proceso.id]
             cPU.reiniciar_q()
             cPU.buscar_proceso()
 
@@ -106,9 +106,7 @@ def simulador(arch):
                                 temp = part.descargar()
                                 temp.estado = 'Listos/Suspendidos'
                                 listos.append(temp)
-                                for inx, item in enumerate(resg_Listos):
-                                    if item.id == temp.id:
-                                        resg_Listos.pop(resg_Listos[inx])
+                                resg_Listos = [item for item in resg_Listos if item.id != temp.id]
                                 cPU.lista_prioridad.remove(temp)
                 cPU.lista_prioridad.rotate(-1)
                 cPU.reiniciar_q()
