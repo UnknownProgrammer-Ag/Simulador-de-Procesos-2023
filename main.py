@@ -42,14 +42,15 @@ def simulador(arch):
             else:
                 break
         # Cargar Particiones
-        # PENSAR MEJOR MANERA DE IMPLEMENTAR RECORRIDO DE COLA,
+        # PENSAR MEJOR MANERA DE IMPLEMENTAR resguardo de listos, FUNCIONA RECORRIDO DE COLA E INTENTO
         intento = 0
         while (memoria_principal.ocupadas != 3):
-            if listos and intento <= len(listos):
+            if listos and (intento <= len(listos)):
                 temp = listos.popleft()
 
                 if not memoria_principal.best_Fit(temp):
                     intento += 1
+                    print(f"Intento {intento} y Proceso Actual {temp.id}")
                     # Esto va a evitar un bucle infinito, de manera que si intento supera la cantidad de procesos en listos salga
                     listos.append(temp)
                     # Quiere decir que no hay particion en este momento que aloje al tamaño, pero si hay disponible
@@ -58,11 +59,12 @@ def simulador(arch):
                     cPU.lista_prioridad.append(temp)
             else:
                 break
-
+        # REVISAR PROCESADOR COMPLETO, ERRORES GARRAFALES PRIORIDAD ALTA
         # Cargar Procesador en Tiempo=0
         if tiempo_total == 0:
             cPU.buscar_proceso()
 
+        # -> Pensar en la estructura manejada por contador un for que represente el quantum de 2, y susodichas consecuencias.
         cPU.procesar()
         # REVISAR TODA LA ESTRUCTURA DE ESTA SECCION
         if cPU.proceso.irrup == 0:
@@ -76,6 +78,7 @@ def simulador(arch):
                     if part.proceso.irrup == cPU.proceso.id:
                         cPU.lista_prioridad.remove(part.proceso)
                         part.descargar()
+                        memoria_principal.ocupadas -= 1
                         resg_Listos = [
                             item for item in resg_Listos if item.id != cPU.proceso.id]
             cPU.reiniciar_q()
@@ -106,6 +109,7 @@ def simulador(arch):
                             part.proceso.estado = 'Listo'
                             if contProc > 3 and memoria_principal.ocupadas == 3 and part.tam >= listos[0].tam:
                                 temp = part.descargar()
+                                memoria_principal.ocupadas -= 1
                                 temp.estado = 'Listos/Suspendidos'
                                 listos.append(temp)
                                 resg_Listos = [

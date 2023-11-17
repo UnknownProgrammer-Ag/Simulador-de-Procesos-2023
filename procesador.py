@@ -3,6 +3,7 @@
 from memoria import memoria_principal
 from collections import deque
 
+
 class Procesador:
     def __init__(self):
         self.proceso = None
@@ -18,6 +19,8 @@ class Procesador:
     def procesar(self):
         self.quantum -= 1
         self.proceso.irrup -= 1
+        print(
+            f"Proceso ID {self.proceso.id}\tQuantum {self.quantum}\tCPU irrupcion {self.proceso.irrup}")
 
     def reiniciar_q(self):
         self.quantum = 2
@@ -36,5 +39,6 @@ class Procesador:
                 else:
                     continue
             self.cargar(temp)
+
 
 cPU = Procesador()
