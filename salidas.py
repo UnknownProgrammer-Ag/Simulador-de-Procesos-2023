@@ -1,20 +1,8 @@
 from terminaltables import AsciiTable
 from memoria import memoria_principal
 
-class OutPut:
-    def __init__(self, id, tA, tI, tFin):
-        self.id = id
-        self.tI = tI
-        self.tA = tA
-        self.tFin = tFin
-
-    def tiempos(self):
-        self.retorno = self.tFin-self.tA
-        self.espera = self.retorno - self.tI
-
-
 class Salidas:
-    def __init__(self, total):
+    def __init__(self):
         self.total = total
         self.ret = 0
         self.wait = 0

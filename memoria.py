@@ -10,36 +10,29 @@ class Particion:
         self.ocupado = 0
         self.proceso = None
 
-    def cargar(self, proceso):
+    def modificarPart(self,proceso,ocupado,fragmInt):
         self.proceso = proceso
-        self.fragmInt = self.tam - self.proceso.tam
-        self.ocupado = 1
-        self.proceso.estado = 'Listo'
-
-    def descargar(self):
-        resg = self.proceso
-        self.proceso = None
-        self.fragmInt = 0
-        self.ocupado = 0
-        return resg
-
+        self.ocupado = ocupado
+        self.fragmInt = fragmInt
+        if self.ocupado:
+            self.proceso.actEstado(1)
 
 class Memoria:
     def __init__(self, particiones):
         self.particiones = particiones
         self.ocupadas = 0
 
-    def best_Fit(self, proceso):
-        mejor_ajuste = None
+    def bestFit(self, proceso):
+        mejorAjuste = None
 
         for particion in self.particiones:
             if not particion.idpart == 0:
                 if not particion.ocupado and particion.tam >= proceso.tam:
-                    if mejor_ajuste is None or particion.tam < mejor_ajuste.tam:
-                        mejor_ajuste = particion
+                    if mejorAjuste is None or particion.tam < mejorAjuste.tam:
+                        mejorAjuste = particion
 
-        if mejor_ajuste is not None:
-            mejor_ajuste.cargar(proceso)
+        if mejorAjuste is not None:
+            mejorAjuste.modificarPart(proceso,1,mejorAjuste.tam-proceso.tam)
             self.ocupadas += 1
             return True
         else:

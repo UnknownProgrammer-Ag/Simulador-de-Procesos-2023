@@ -1,46 +1,19 @@
-# Importar modulos separados del simulador
+#Librerias y Modulos necesarios para iniciar el programa
 from procesos_csv import csv_opener
-from memoria import Memoria, memoria_principal
-from procesador import Procesador, cPU
-from salidas import Salidas, OutPut
-# Importar modulos de Python para facilitar implementación
+from simulador import
 import tkinter as tk
 from tkinter import filedialog
 from time import sleep
-from collections import deque
 
 root = tk.Tk()
 root.withdraw()
-
-
-def simulador(arch):
-    tiempo_total = 0
-    lista_sal = []
-    nuevos = deque()
-    listos = deque()
-    contProc = 0
-    band_nuevos = False
-    sal = Salidas(len(arch))
-    resg_Listos = []
+#-------------------------------------------------------------------------------------
     while True:
-        # Cargar Cola de Nuevos mientras exista contenido en arch
-        while arch:
-            temp = arch.popleft()
-            if temp.arribo == tiempo_total:
-                nuevos.append(temp)
-                band_nuevos = True
-            else:
-                arch.appendleft(temp)
-                break
+
+
+
         # Cargar Listos si la memoria no esta ocupada -> Mantener Multiprogramación de 5
-        while contProc < 5:
-            if nuevos:
-                temp = nuevos.popleft()
-                temp.estado = 'Listos / Suspendidos'
-                listos.append(temp)
-                contProc += 1
-            else:
-                break
+
         # Cargar Particiones
         # PENSAR MEJOR MANERA DE IMPLEMENTAR resguardo de listos, FUNCIONA RECORRIDO DE COLA E INTENTO
         intento = 0
@@ -59,6 +32,10 @@ def simulador(arch):
                     cPU.lista_prioridad.append(temp)
             else:
                 break
+
+
+
+
         # REVISAR PROCESADOR COMPLETO, ERRORES GARRAFALES PRIORIDAD ALTA
         # Cargar Procesador en Tiempo=0
         if tiempo_total == 0:
@@ -144,17 +121,15 @@ def simulador(arch):
                             break
     sal.estadistico(lista_sal)
 
-
 # Principal
 print("Bienvenido a Simulador ROUND ROBIN de Procesos")
 print("Ahora, para iniciar el simulador ingrese el archivo CSV que contendrá los procesos")
 sleep(2)
 path = filedialog.askopenfilename(title="Seleccionar Archivo CSV", filetypes=[
                                   ("Archivo csv", "*.csv"), ("Todos los archivos", "*.*")])
-arch = csv_opener(path)
-
+procesos = csv_opener(path) #Lista de Todos los procesos
 # Llamada al Simulador
-if arch != None:
-    simulador(arch)
+if procesos != None:
+    (procesos)
 else:
     print("El archivo csv estaba vacío o fallo en cargar")

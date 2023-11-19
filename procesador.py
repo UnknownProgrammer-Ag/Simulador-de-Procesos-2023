@@ -1,7 +1,7 @@
 # Módulo encargado de manejar el proceso elegido de la cola de listo, cargado en memoria
 # El módulo maneja el quantum y maneja el avance del tiempo total a su vez.
 from memoria import memoria_principal
-from collections import deque
+
 
 
 class Procesador:
