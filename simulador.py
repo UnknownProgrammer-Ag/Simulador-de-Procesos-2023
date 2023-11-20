@@ -45,7 +45,7 @@ class Simulador:
         n = 0
         while ([memoria_principal.ocupadas < 3 ]and [len(self.listos5)<memoria_principal.ocupadas] and [n<(len(self.listos5)-memoria_principal.ocupadas)]): #Mientras existan particiones vacias
             if self.listos5: #Si la cola de listos tiene procesos
-                if self.listos5[n] not in [part.proceso for part in memoria_principal.particiones if part.proceso != None]:
+                if self.listos5[n].id not in [part.proceso.id for part in memoria_principal.particiones if part.proceso != None]:
                     print(n)
                     print(self.listos5[n])
                     #Si el proceso en el tope no se encuentra ya en memoria
