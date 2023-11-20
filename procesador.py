@@ -11,6 +11,5 @@ class Procesador:
         self.proceso = proceso
         self.particion = particion
         self.tIProceso = tIProceso
-        self.proceso.actEstado(4)
 
 cPU = Procesador()

@@ -26,7 +26,7 @@ class Proceso:
         self.espera = self.retorno - self.tI
 
     def tIVariable(self,tI):
-        self.tIVariable = tI
+        self.tIVar = tI
 
 def csv_opener(direc):
     file = open(direc, newline='')

@@ -40,7 +40,7 @@ class Memoria:
 
     def obtPartID(self,proc):
         for i in range(len(self.particiones)):
-            if (self.particiones[i].id != 0 and self.particiones[i].proceso == proc):
+            if (self.particiones[i].idpart != 0 and self.particiones[i].proceso == proc):
                 return i
 
 # Crear particiones de memoria
