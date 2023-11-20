@@ -6,19 +6,27 @@ class Proceso:
         self.tam = tam
         self.tA = tA
         self.tI = tI
-        self.estado = 0  #0: Nuevo| 1: Listos| 2:Listos/Suspendidos| 3: Terminado|
-        self.tFin = 0  #Tiempo en que el proceso termina
-
+        self.tIVar= tI
+        self.estado = 0  #0: Nuevo| 1: Listos| 2:Listos/Suspendidos| 3: Terminado|4: Ejecucion|
+        #Valores cuando termina
+        self.tFin = 0
+        self.retorno = 0
+        self.espera = 0
     def __str__(self):
-        return f"{self.id} {self.tam} {self.tA} {self.tI}"
+        return f"Proceso {self.id} de Tamaño {self.tam}"
 
     def actEstado(self,estado):
         self.estado = estado
+
+    def fin(self,tFin):
+        self.tFin = tFin
 
     def tiempos(self):
         self.retorno = self.tFin - self.tA
         self.espera = self.retorno - self.tI
 
+    def tIVariable(self,tI):
+        self.tIVariable = tI
 
 def csv_opener(direc):
     file = open(direc, newline='')
