@@ -36,7 +36,7 @@ class Salidas:
         estable.inner_row_border = True
         print(estable.table)
         print(
-            f"\nPromedios:\n Tiempo de Retorno:{self.ret/self.total}\t\tTiempo de Espera:{self.wait/self.total}")
+            f"\nPromedios:\n Tiempo de Retorno:{self.ret/len(self.total)}\t\tTiempo de Espera:{self.wait/len(self.total)}")
 
 
 sal = Salidas()
