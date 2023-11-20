@@ -2,8 +2,8 @@
 from memoria import memoria_principal
 from procesador import cPU
 from salidas import sal
-from collections import deque
 from time import sleep
+from collections import deque
 
 class Simulador:
     def __init__(self):
@@ -39,12 +39,15 @@ class Simulador:
                 self.nuevos[0].actEstado(2)  # Cambia a Listos/Suspendidos
                 self.listos5.append(self.nuevos.pop(0))
                 self.bandListo = True  # Uno o màs procesos entraron a listos
+        print(self.listos5)
 
     def cargarBestFit(self):
         n = 0
-        while ([memoria_principal.ocupadas < 3 ]and [n<(len(self.listos5)-memoria_principal.ocupadas)]): #Mientras existan particiones vacias
+        while ([memoria_principal.ocupadas < 3 ]and [len(self.listos5)<memoria_principal.ocupadas] and [n<(len(self.listos5)-memoria_principal.ocupadas)]): #Mientras existan particiones vacias
             if self.listos5: #Si la cola de listos tiene procesos
-                if self.listos5[n].id not in [part.proceso.id for part in memoria_principal.particones if part.proceso != None]:
+                if self.listos5[n] not in [part.proceso for part in memoria_principal.particiones if part.proceso != None]:
+                    print(n)
+                    print(self.listos5[n])
                     #Si el proceso en el tope no se encuentra ya en memoria
                     if memoria_principal.bestFit(self.listos5[n]):
                         if (n == 0):
@@ -131,7 +134,7 @@ class Simulador:
                 else:
                     print("Debe ser enter para continuar...")
 
-    def programa(self,procesos):
+    def programa(self):
         self.colaNuevos()
         self.colaListos()
         self.cargarBestFit()

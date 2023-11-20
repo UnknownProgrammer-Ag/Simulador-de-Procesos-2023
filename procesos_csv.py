@@ -34,7 +34,7 @@ def csv_opener(direc):
     next(reader) # Adelanta el cabezal del csv
     arch_procesos = []
     for row in reader:
-        if int(row[1]<=250):
+        if (int(row[1]))<= 250:
             proc = Proceso(int(row[0]), int(row[1]), int(row[2]), int(row[3]))
             arch_procesos.append(proc)
         else:
