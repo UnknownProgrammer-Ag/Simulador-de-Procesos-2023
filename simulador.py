@@ -52,20 +52,32 @@ class Simulador:
                 if self.listos5: #Si la cola de listos tiene procesos
                     if (len(self.listos5))>memoria_principal.ocupadas:
                         print(f"Valor de N: {n}")
-                        if self.listos5[n].id not in [part.proceso.id for part in memoria_principal.particiones if part.proceso != None]:
-                            #Si el proceso en el tope no se encuentra ya en memoria
-                            if memoria_principal.bestFit(self.listos5[n]):
-                                if (n == 0):
-                                #Si bestFit devuelve True se rota al final
-                                    self.listos5.rotate(-1)
+                        if n<=((len(self.listos5))-1):
+                            if self.listos5[n].id not in [part.proceso.id for part in memoria_principal.particiones if part.proceso != None]:
+                                #Si el proceso en el tope no se encuentra ya en memoria
+                                if memoria_principal.bestFit(self.listos5[n]):
+                                    if (n == 0):
+                                    #Si bestFit devuelve True se rota al final
+                                        self.listos5.rotate(-1)
+                                    else:
+                                    # Se mantiene el valor que no entro en prioridad y mueve otro proceso encontrado
+                                        print(f"Cola de listos Antes de Rotar:")
+                                        for i in self.listos5:
+                                            print(i)
+                                        self.listos5.rotate(-n)
+                                        temp = self.listos5.pop()
+                                        self.listos5.rotate(n)
+                                        print(f"Cola de listos despues de rotar:")
+                                        for i in self.listos5:
+                                            print(i)
+                                        print("\n")
+                                        self.listos5.append(temp)
                                 else:
-                                # Se mantiene el valor que no entro en prioridad y mueve otro proceso encontrado
-                                    temp = self.listos5.pop(n)
-                                    self.listos5.append(temp)
+                                    n += 1
                             else:
-                                n += 1
+                                self.listos5.rotate(-1)
                         else:
-                            self.listos5.rotate(-1)
+                            break
                     else:
                         break
                 else:
@@ -183,11 +195,11 @@ class Simulador:
         self.imprimirSalidas()
         self.tiempo_total += 1
         while ((len(self.terminados)) != (len(self.procesos))):
-            self.procesamiento2Q()
             self.colaNuevos()
             self.colaListos()
             self.cargarBestFit()
             self.cargarProcesador()
+            self.procesamiento2Q()
             self.imprimirSalidas()
             self.tiempo_total += 1
 
