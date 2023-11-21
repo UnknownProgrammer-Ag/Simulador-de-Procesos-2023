@@ -25,7 +25,7 @@ class Salidas:
 
     def estadistico(self, lista):
         self.lista = lista
-        self.lista.sort()
+        self.lista.sort(key=lambda x: x.id,reverse = False)
         est = [['ID Proceso', 'T_Fin', 'T_Retorno', 'T_Espera']]
         for element in self.lista:
             self.ret += element.retorno
