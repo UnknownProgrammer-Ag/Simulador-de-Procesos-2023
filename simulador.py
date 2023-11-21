@@ -22,6 +22,7 @@ class Simulador:
         self.bandListo = False
         self.bandTerminado = False
         self.bandNuevo = False
+        self.bandMemoria = False
 
     def cargarArch(self,procesos):
         self.procesos = procesos
@@ -45,6 +46,7 @@ class Simulador:
 
     def cargarBestFit(self):
         n = 0
+        self.bandMemoria = False
         print(f"Tamaño de Listos: {len(self.listos5)}")
         while True:
             # Mientras existan particiones vacias
@@ -56,6 +58,7 @@ class Simulador:
                             if self.listos5[n].id not in [part.proceso.id for part in memoria_principal.particiones if part.proceso != None]:
                                 #Si el proceso en el tope no se encuentra ya en memoria
                                 if memoria_principal.bestFit(self.listos5[n]):
+                                    self.bandMemoria = True
                                     if (n == 0):
                                     #Si bestFit devuelve True se rota al final
                                         self.listos5.rotate(-1)
@@ -164,7 +167,7 @@ class Simulador:
                 print(i)
 
     def imprimirSalidas(self):
-        if (self.bandListo or self.bandNuevo or self.bandTerminado):
+        if (self.bandListo or self.bandNuevo or self.bandTerminado or self.bandMemoria):
             print(f"\nTiempo actual: {self.tiempo_total}")
 
             if cPU.proceso != None:
