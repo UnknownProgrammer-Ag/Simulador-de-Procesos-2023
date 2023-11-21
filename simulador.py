@@ -50,9 +50,9 @@ class Simulador:
             # Mientras existan particiones vacias
             if memoria_principal.ocupadas <3:
                 if self.listos5: #Si la cola de listos tiene procesos
-                    if (len(self.listos5))>memoria_principal.ocupadas:
+                    if (len(self.listos5))>memoria_principal.ocupadas: #Solo entraría aqui con menos de 2 memorias ocupadas
                         print(f"Valor de N: {n}")
-                        if n<=((len(self.listos5))-1):
+                        if n<=((len(self.listos5))-1): #Recorrido de cola y evitar que llegue a fuera de indice
                             if self.listos5[n].id not in [part.proceso.id for part in memoria_principal.particiones if part.proceso != None]:
                                 #Si el proceso en el tope no se encuentra ya en memoria
                                 if memoria_principal.bestFit(self.listos5[n]):
@@ -65,13 +65,16 @@ class Simulador:
                                         for i in self.listos5:
                                             print(i)
                                         self.listos5.rotate(-n)
-                                        temp = self.listos5.pop()
+                                        temp = self.listos5.popleft()
                                         self.listos5.rotate(n)
                                         print(f"Cola de listos despues de rotar:")
                                         for i in self.listos5:
                                             print(i)
-                                        print("\n")
                                         self.listos5.append(temp)
+                                        print(f"Cola de listos despues de rotar:")
+                                        for i in self.listos5:
+                                            print(i)
+                                        print("\n")
                                 else:
                                     n += 1
                             else:

@@ -4,6 +4,7 @@ from simulador import sim
 import tkinter as tk
 from tkinter import filedialog
 from time import sleep
+import os
 
 root = tk.Tk()
 root.withdraw()
@@ -17,6 +18,7 @@ path = filedialog.askopenfilename(title="Seleccionar Archivo CSV", filetypes=[
 procesos = csv_opener(path) #Lista de Todos los procesos
 # Llamada al Simulador
 if procesos != None:
+    os.system('cls||clear')
     sim.cargarArch(procesos)
     sim.programa()
 else:
