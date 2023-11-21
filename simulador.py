@@ -32,7 +32,7 @@ class Simulador:
         for i in range(len(self.procesos)):
             if (self.procesos[i].tA == self.tiempo_total):
                 self.nuevos.append(self.procesos[i])
-                print(f"Proceso Nuevo: {self.procesos[i]}")
+                print(f"\nNuevo: {self.procesos[i]}")
                 self.bandNuevo = True  # Marca que n procesos entraron al sistema
 
     def colaListos(self):
@@ -150,12 +150,13 @@ class Simulador:
         if (self.bandListo or self.bandNuevo or self.bandTerminado or self.bandMemoria):
             print(f"\nTiempo actual: {self.tiempo_total}")
 
+            print("\nEstado Actual del Procesador: ")
             if cPU.proceso != None:
                 print(cPU)
             else:
                 print("Actualmente el procesador esta desocupado")
 
-            print(f"Estado de Cola de Listos: ")
+            print(f"\nEstado de Cola de Listos: ")
             for particion in memoria_principal.particiones:
                 if (particion.proceso != None) and (particion.proceso != cPU.proceso):
                     print(particion.proceso)
@@ -183,6 +184,7 @@ class Simulador:
 
         print("\nSimulación Terminada...")
         print("\nCalculando Estadistica...")
+        print("\n")
         sal.cargarProcesos(self.procesos)
         sleep(2)
         sal.estadistico(self.terminados)

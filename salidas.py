@@ -20,6 +20,11 @@ class Salidas:
             table = AsciiTable(data)
             table.title = 'Tabla de Memoria'
             table.inner_row_border = True
+            table.justify_columns[0] = 'center'
+            table.justify_columns[1] = 'center'
+            table.justify_columns[2] = 'center'
+            table.justify_columns[3] = 'center'
+            table.justify_columns[4] = 'center'
             print(table.table)
             print("\n")
 
@@ -35,6 +40,10 @@ class Salidas:
         estable = AsciiTable(est)
         estable.title = 'Informe Final'
         estable.inner_row_border = True
+        estable.justify_columns[0] = 'center'
+        estable.justify_columns[1] = 'center'
+        estable.justify_columns[2] = 'center'
+        estable.justify_columns[3] = 'center'
         print(estable.table)
         print(
             f"\nPromedios:\n Tiempo de Retorno:{self.ret/len(self.total)}\t\tTiempo de Espera:{self.wait/len(self.total)}")

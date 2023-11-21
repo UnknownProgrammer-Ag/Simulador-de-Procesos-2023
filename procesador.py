@@ -6,7 +6,7 @@ class Procesador:
         self.tIProceso = 0
 
     def __str__(self):
-        return f"Proceso {self.proceso.id} está ejecutandose\n"
+        return f"Proceso {self.proceso.id} está ejecutandose"
     def cargar(self, proceso,particion,tIProceso):
         self.proceso = proceso
         self.particion = particion

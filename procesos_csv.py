@@ -34,12 +34,17 @@ def csv_opener(direc):
     next(reader) # Adelanta el cabezal del csv
     arch_procesos = []
     for row in reader:
-        if (int(row[1]))<= 250:
-            proc = Proceso(int(row[0]), int(row[1]), int(row[2]), int(row[3]))
-            arch_procesos.append(proc)
+        if (int(row[0]))<=10:
+            if (int(row[1]))<= 250:
+                proc = Proceso(int(row[0]), int(row[1]), int(row[2]), int(row[3]))
+                arch_procesos.append(proc)
+            else:
+                print (f'El proceso {row[0]} supera el tamaño máximo de partición')
+                print("Corrija este error, por ahora el proceso se pasara de largo")
         else:
-            print (f'El proceso {row[0]} supera el tamaño máximo de partición')
-            print("Corrija este error, por ahora el proceso se pasara de largo")
+            print("Solo se contabilizaran los primeros 10 procesos como se advirtio en el README")
+            input("Presione cualquier tecla para confirmar o Ctrl+C para salir del programa")
+            break
     return arch_procesos
 
 
