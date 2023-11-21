@@ -68,15 +68,8 @@ class Simulador:
                                 else:
                                     n += 1 #Representa los procesos que no entraron y estan adelante del que si
                             else:
-                                if (n == 0):
-                                    # Si bestFit devuelve True se rota al final
-                                    self.listos5.rotate(-1)
-                                else:
-                                    # Se mantiene el valor que no entro en prioridad y mueve otro proceso encontrado
-                                    self.listos5.rotate(-n)
-                                    temp = self.listos5.popleft()
-                                    self.listos5.rotate(n)
-                                    self.listos5.append(temp)
+                                #Si esta en memoria lo rota
+                                self.listos5.rotate(-1)
                         else:
                             break
                     else:
