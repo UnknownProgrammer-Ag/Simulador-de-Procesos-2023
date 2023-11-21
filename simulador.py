@@ -140,7 +140,7 @@ class Simulador:
                     #Actualizo valores del proceso
                     cPU.proceso.actEstado(1)
                     cPU.proceso.tIVariable(cPU.tIProceso)
-                    if (memoria_principal.ocupadas == 3 and memoria_principal.particiones[cPU.particion].id != self.listos5[0].id and memoria_principal.particiones[cPU.particion].tam >= self.listos5[0].tam):
+                    if (memoria_principal.ocupadas == 3 and memoria_principal.particiones[cPU.particion].proceso.id != self.listos5[0].id and memoria_principal.particiones[cPU.particion].tam >= self.listos5[0].tam):
                     #Si la memoria esta ocupada y la particion puede alojar al proceso en el tope de pila
                         cPU.proceso.actEstado(2)
                         memoria_principal.particiones[cPU.particion].modificarPart(None,0,0)
